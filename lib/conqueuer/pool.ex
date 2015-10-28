@@ -1,13 +1,19 @@
 defmodule Conqueuer.Pool do
   @moduledoc """
-  Use this mixin to define a pool and supervisor.
+  Use this mixin to define a poolboy pool and supervisor.
 
   Given you want a pool named `:workers`:
 
       defmodule MyApp.WorkerPool do
         use Conqueuer.Pool, name: :workers,
-                            worker: MyApp.Worker
+                            worker: MyApp.Worker,
+                            size: 10,
+                            max_overflow: 20
       end
+
+  The `size` and `max_overflow` arguments are optional and if not provided the
+  defaults are `size: 1` and `max_overflow: 0`.  For more information on these
+  options please see the poolboy project's documentation.
 
   Now that the `:workers` pool and supervisor is defined you will need to add it to your
   supervision tree.
