@@ -44,7 +44,7 @@ defmodule Conqueuer.Worker do
           perform args
         end
 
-        send foreman, {:finished, self}
+        Conqueuer.Foreman.finished foreman, self
 
         {:noreply, state}
       end

@@ -1,12 +1,14 @@
 defmodule ConqueuerSpec.Queue do
 
-	use ESpec, async: true
+	use ESpec
 
   alias Conqueuer.Queue
 
   before do
-    {:ok, queue} = Queue.start_link([])
-    {:ok, queue: queue, item: 1}
+    registered_name = ConqueuerSpec.Helpers.start_queue
+    Queue.empty registered_name
+
+    {:ok, queue: registered_name, item: 1}
   end
 
   defmodule AnEmptyQueueSpec do
@@ -14,7 +16,7 @@ defmodule ConqueuerSpec.Queue do
     use ESpec, shared: true
 
     it "should not agree the item is a member" do
-      expect( Queue.member?( shared.queue, shared.item )).to eq( false )
+      expect( Queue.member?( shared.queue, shared.item )).to be_false
     end
 
     it "should have a size of 0" do
@@ -40,7 +42,7 @@ defmodule ConqueuerSpec.Queue do
     end
 
     it "should agree the item is a member" do
-      expect( Queue.member?( shared.queue, shared.item )).to eq( true )
+      expect( Queue.member?( shared.queue, shared.item )).to be_true
     end
 
     it "should have a size of 1" do
