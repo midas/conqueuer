@@ -8,7 +8,24 @@ defmodule Conqueuer.Mixfile do
      build_embedded: Mix.env == :prod,
      preferred_cli_env: [espec: :test],
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps,
+     package: package]
+  end
+
+  defp package do
+    [
+      files: [
+        "lib",
+        "mix.exs",
+        "README.md",
+        "LICENSE*"
+      ],
+      maintainers: ["Jason Harrelson"],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/midas/conqueuer"
+      }
+    ]
   end
 
   # Configuration for the OTP application
