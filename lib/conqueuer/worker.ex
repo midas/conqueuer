@@ -3,7 +3,7 @@ defmodule Conqueuer.Worker do
   Use this mixin to define a worker. A worker must define a perform function
   that is run as part of a background process.
 
-      defmodule MyApp.SomeWorker do
+      defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
         def perform do
@@ -12,7 +12,7 @@ defmodule Conqueuer.Worker do
 
   To provide a single parameter:
 
-      defmodule MyApp.SomeWorker do
+      defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
         def perform(param) do
@@ -21,7 +21,7 @@ defmodule Conqueuer.Worker do
 
   For more than one parameter, use a tuple.
 
-      defmodule MyApp.SomeWorker do
+      defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
         def perform({param1, param2}) do

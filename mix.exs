@@ -48,6 +48,8 @@ defmodule Conqueuer.Mixfile do
   defp deps do
     [
       {:espec, "~> 0.8", only: :test},
+      {:ex_doc, "~> 0.10", only: :dev},
+        {:earmark, ">= 0.0.0", only: :dev},
       {:poolboy, "~> 1.5"},
     ]
   end

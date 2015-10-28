@@ -1,4 +1,34 @@
 defmodule Conqueuer.Foreman do
+  @moduledoc ~S"""
+  The foreman is responsible for coordinating the arrival, performance and
+  finishing of work.
+
+  When `:work_arrived` the foreman begins to drain the queue and continues until
+  either the queue is empty or the worker pool is exhausted at which point it
+  stops draining.  When a worker is `:finished` the foreman checks the worker
+  back into the worker queue and begins to drain the queue again.
+
+  You do not have to define a foreman, only add a registered foreman process
+  with the correct name to your supervision tree.
+
+  Given a work queue named `:resolvers`:
+
+      defmodule MyApp do
+        use Application
+
+        def start(_type, _args) do
+          import Supervisor.Spec, warn: false
+
+          children = [
+            ...
+            worker(Conqueuer.Foreman, [[name: :resolvers], [name: :ResolversForeman]])
+          ]
+
+          opts = [ strategy: :one_for_one, name: MyApp.Supervisor ]
+          Supervisor.start_link(children, opts)
+        end
+      end
+  """
 
   use GenServer
 
@@ -8,14 +38,23 @@ defmodule Conqueuer.Foreman do
 
   # Public API ##########
 
+  @doc """
+  Starts the Foreman.
+  """
   def start_link( args \\ [], opts \\ [] ) do
     GenServer.start_link __MODULE__, args, opts
   end
 
+  @doc """
+  Notifies the Foreman work has arrived.
+  """
   def work_arrived( foreman ) do
     GenServer.cast foreman, :work_arrived
   end
 
+  @doc """
+  Notifies the Foreman work has finished.
+  """
   def finished( foreman, worker ) do
     GenServer.cast foreman, {:finished, worker}
   end

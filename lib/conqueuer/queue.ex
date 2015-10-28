@@ -1,4 +1,6 @@
 defmodule Conqueuer.Queue do
+  @moduledoc """
+  """
 
   use GenServer
 
