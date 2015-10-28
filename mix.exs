@@ -14,6 +14,7 @@ defmodule Conqueuer.Mixfile do
 
   defp package do
     [
+      description: "An Elixir in memory work queue.",
       files: [
         "lib",
         "mix.exs",
