@@ -1,9 +1,8 @@
 defmodule ConqueuerSpec.SomethingWorker do
 
-  use GenServer
+  use Conqueuer.Worker
 
-  def start_link( args \\ [], opts \\ [] ) do
-    GenServer.start_link __MODULE__, args, opts
+  def perform do
   end
 
 end
