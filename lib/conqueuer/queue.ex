@@ -4,28 +4,28 @@ defmodule Conqueuer.Queue do
 
   # Public API ############
 
-  def start_link(args, opts \\ []) do
+  def start_link(args \\ [], opts \\ []) do
     GenServer.start_link __MODULE__, args, opts
   end
 
-  def empty(queue_pid) do
-    GenServer.cast queue_pid, :empty
+  def empty(queue) do
+    GenServer.cast queue, :empty
   end
 
-  def enqueue(queue_pid, item) do
-    GenServer.call queue_pid, {:enqueue, item}
+  def enqueue(queue, item) do
+    GenServer.call queue, {:enqueue, item}
   end
 
-  def member?(queue_pid, item) do
-    GenServer.call queue_pid, {:member?, item}
+  def member?(queue, item) do
+    GenServer.call queue, {:member?, item}
   end
 
-  def next(queue_pid) do
-    GenServer.call queue_pid, :next
+  def next(queue) do
+    GenServer.call queue, :next
   end
 
-  def size(queue_pid) do
-    GenServer.call queue_pid, :size
+  def size(queue) do
+    GenServer.call queue, :size
   end
 
   # Private API ############
