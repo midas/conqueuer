@@ -8,23 +8,23 @@ defmodule Conqueuer.Queue do
     GenServer.start_link __MODULE__, args, opts
   end
 
-  def empty(queue) do
+  def empty( queue ) do
     GenServer.cast queue, :empty
   end
 
-  def enqueue(queue, item) do
+  def enqueue( queue , item) do
     GenServer.call queue, {:enqueue, item}
   end
 
-  def member?(queue, item) do
+  def member?( queue , item) do
     GenServer.call queue, {:member?, item}
   end
 
-  def next(queue) do
+  def next( queue ) do
     GenServer.call queue, :next
   end
 
-  def size(queue) do
+  def size( queue ) do
     GenServer.call queue, :size
   end
 
