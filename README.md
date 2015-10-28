@@ -3,10 +3,11 @@
 Conqueuer (pronounced like conquer) is a non-persistent Elixir work queue.
 
 
-### Documentation
+### Documentation and Information
 
 The [docs](http://hexdocs.pm/conqueuer/0.1.0/Conqueuer.html) can be found on the
-[hexdocs](http://hexdocs.pm) website.
+hexdocs website and [further information](https://hex.pm/packages/conqueuer) on the
+hex website.
 
 
 ### Installation
