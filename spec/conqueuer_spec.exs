@@ -1,0 +1,3 @@
+defmodule ConqueuerSpec do
+
+end

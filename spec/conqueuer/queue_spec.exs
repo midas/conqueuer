@@ -1,4 +1,4 @@
-defmodule Conqueuer.QueueSpec do
+defmodule ConqueuerSpec.Queue do
 
 	use ESpec, async: true
 

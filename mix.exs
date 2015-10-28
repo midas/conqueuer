@@ -30,6 +30,7 @@ defmodule Conqueuer.Mixfile do
   defp deps do
     [
       {:espec, "~> 0.8", only: :test},
+      {:poolboy, "~> 1.5"},
     ]
   end
 end
