@@ -17,8 +17,8 @@ defmodule Conqueuer.Pool do
     quote do
       use Supervisor
 
-      def start_link do
-        Supervisor.start_link __MODULE__, []
+      def start_link( args \\[], opts \\ [] ) do
+        Supervisor.start_link __MODULE__, args, opts
       end
 
       def init([]) do
