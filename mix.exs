@@ -6,6 +6,7 @@ defmodule Conqueuer.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
+     preferred_cli_env: [espec: :test],
      start_permanent: Mix.env == :prod,
      deps: deps]
   end
@@ -27,6 +28,8 @@ defmodule Conqueuer.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:espec, "~> 0.8", only: :test},
+    ]
   end
 end
