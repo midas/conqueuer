@@ -27,7 +27,7 @@ defmodule Conqueuer.Util do
   defp infer_base_name( name ) do
     name
     |> Atom.to_string
-    |> String.capitalize
+    |> Inflex.camelize
   end
 
   # TODO move to external project
