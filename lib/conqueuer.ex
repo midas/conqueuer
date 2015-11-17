@@ -68,13 +68,9 @@ defmodule Conqueuer do
         def start(_type, _args) do
           import Supervisor.Spec, warn: false
 
-          children = [
-            supervisor(MyApp.ResolversPoolSupervisor, [[], [name: :ResolversPoolSupervisor]]),
-            worker(Conqueuer.Queue, [[], [name: :ResolversQueue]]),
-            worker(Conqueuer.Foreman, [[name: :resolvers], [name: :ResolversForeman]])
-          ]
+          children = Conqueuer.child_specs(:resolvers, MyApp.ResolversPoolSupervisor)
 
-          opts = [ strategy: :one_for_one, name: MyApp.Supervisor ]
+          opts = [strategy: :one_for_one, name: Test.Supervisor]
           Supervisor.start_link(children, opts)
         end
       end
@@ -92,10 +88,44 @@ defmodule Conqueuer do
   Queues the `args` for the work to be performed to the `name` worker queue.
   """
   def work( name, args \\ nil ) do
-    {foreman_name, queue_name} = Util.infer_conqueuer_collaborator_names( name )
+    {foreman_name, queue_name} = Util.infer_conqueuer_collaborator_names(name)
 
-    Conqueuer.Queue.enqueue( queue_name, args )
-    Conqueuer.Foreman.work_arrived( foreman_name )
+    Conqueuer.Queue.enqueue(queue_name, args)
+    Conqueuer.Foreman.work_arrived(foreman_name)
+  end
+
+  @doc """
+  Generates the child process specs for a Conqueuer work queue.  Expects the
+  name of the pool and module of the pool supervisor.
+
+  Manual way:
+
+      children = [
+        supervisor(MyApp.ResolversPoolSupervisor, [[], [name: :ResolversPoolSupervisor]]),
+        worker(Conqueuer.Queue, [[], [name: :ResolversQueue]]),
+        worker(Conqueuer.Foreman, [[name: :resolvers], [name: :ResolversForeman]])
+      ]
+
+      opts = [strategy: :one_for_one, name: MyApp.Supervisor]
+      Supervisor.start_link(children, opts)
+
+  Using the helper:
+
+      children = Conqueuer.child_specs( :resolvers, Test.PoolSupervisor )
+
+      opts = [strategy: :one_for_one, name: Test.Supervisor]
+      Supervisor.start_link(children, opts)
+  """
+  def child_specs(pool_name, pool_supervisor_module) do
+    import Supervisor.Spec, warn: false
+
+    {foreman, pool, pool_supervisor, queue} = Util.infer_collaborator_names(pool_name)
+
+    [
+      supervisor(pool_supervisor_module, [[], [name: pool_supervisor]]),
+      worker(Conqueuer.Queue, [[], [name: queue]]),
+      worker(Conqueuer.Foreman, [[name: pool_name], [name: foreman]])
+    ]
   end
 
 end

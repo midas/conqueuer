@@ -1,7 +1,7 @@
 defmodule Conqueuer.Util do
 
   def infer_collaborator_names( name ) do
-    {infer_foreman_name( name ), infer_pool_name( name ), infer_queue_name( name )}
+    {infer_foreman_name( name ), infer_pool_name( name ), infer_pool_supervisor_name( name ), infer_queue_name( name )}
   end
 
   def infer_conqueuer_collaborator_names( name ) do
@@ -14,6 +14,10 @@ defmodule Conqueuer.Util do
 
   def infer_foreman_name( name ) do
     (infer_base_name( name ) <> "Foreman") |> String.to_atom
+  end
+
+  def infer_pool_supervisor_name( name ) do
+    (infer_base_name( name ) <> "PoolSupervisor") |> String.to_atom
   end
 
   def infer_pool_name( name ) do
