@@ -43,6 +43,10 @@ defmodule Conqueuer do
 
   Define a [pool](Conqueuer.Pool.html):
 
+      Conqueuer.define_pool_supervisor( :resolvers, MyApp.ResolversPoolSupervisor, MyApp.ResolverWorker )
+
+  Or manually:
+
       defmodule MyApp.ResolversPoolSupervisor do
         use Conqueuer.Pool, name: :resolvers,
                             worker: MyApp.ResolverWorker,
@@ -70,7 +74,7 @@ defmodule Conqueuer do
 
           children = Conqueuer.child_specs(:resolvers, MyApp.ResolversPoolSupervisor)
 
-          opts = [strategy: :one_for_one, name: Test.Supervisor]
+          opts = [strategy: :one_for_one, name: MyApp.Supervisor]
           Supervisor.start_link(children, opts)
         end
       end
@@ -95,10 +99,33 @@ defmodule Conqueuer do
   end
 
   @doc """
+  Dynamically define the pool supervisor module for the pool of workers.
+
+      Conqueuer.define_pool_supervisor( :resolvers, MyApp.ResolversPoolSupervisor )
+  """
+  def define_pool_supervisor( pool_name, supervisor_module, worker_module, opts \\ [] ) do
+    pool_size    = Keyword.get( opts, :pool_size, 2 )
+    max_overflow = Keyword.get( opts, :max_overflow, 0 )
+
+    Code.eval_string(~s(
+      defmodule #{supervisor_module} do
+
+        use Conqueuer.Pool, name: :#{pool_name},
+                            worker: #{worker_module},
+                            size: #{pool_size},
+                            max_overflow: #{max_overflow}
+
+      end
+    ))
+  end
+
+  @doc """
   Generates the child process specs for a Conqueuer work queue.  Expects the
   name of the pool and module of the pool supervisor.
 
   Manual way:
+
+      Conqueuer.define_pool_supervisor(:resolvers, MyApp, pool_size: 10, max_overflow: 5)
 
       children = [
         supervisor(MyApp.ResolversPoolSupervisor, [[], [name: :ResolversPoolSupervisor]]),
@@ -111,12 +138,14 @@ defmodule Conqueuer do
 
   Using the helper:
 
-      children = Conqueuer.child_specs( :resolvers, Test.PoolSupervisor )
+      Conqueuer.define_pool_supervisor( :workers, MyApp.ResolversPoolSupervisor, MyApp.ResolverWorker )
 
-      opts = [strategy: :one_for_one, name: Test.Supervisor]
+      children = Conqueuer.child_specs(:resolvers, MyApp.ResolversPoolSupervisor )
+
+      opts = [strategy: :one_for_one, name: MyApp.Supervisor]
       Supervisor.start_link(children, opts)
   """
-  def child_specs(pool_name, pool_supervisor_module) do
+  def child_specs(pool_name, pool_supervisor_module, opts \\ []) do
     import Supervisor.Spec, warn: false
 
     {foreman, pool, pool_supervisor, queue} = Util.infer_collaborator_names(pool_name)
@@ -124,7 +153,7 @@ defmodule Conqueuer do
     [
       supervisor(pool_supervisor_module, [[], [name: pool_supervisor]]),
       worker(Conqueuer.Queue, [[], [name: queue]]),
-      worker(Conqueuer.Foreman, [[name: pool_name], [name: foreman]])
+      worker(Conqueuer.Foreman, [[name: pool], [name: foreman]])
     ]
   end
 
