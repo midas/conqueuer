@@ -3,7 +3,7 @@ defmodule Conqueuer.Mixfile do
 
   def project do
     [app: :conqueuer,
-     version: "0.2.0",
+     version: "0.3.0",
      elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
      preferred_cli_env: [espec: :test],
