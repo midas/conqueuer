@@ -61,7 +61,7 @@ defmodule Conqueuer.Worker do
         raise "You must define a perform/1 function in your worker"
       end
 
-      defoverridable [ perform: 1, perform: 2 ]
+      defoverridable [ init: 1, perform: 1, perform: 2 ]
     end
   end
 
