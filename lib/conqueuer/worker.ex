@@ -37,6 +37,10 @@ defmodule Conqueuer.Worker do
         GenServer.start_link __MODULE__, args, opts
       end
 
+      def init(state) do
+        {:ok, state}
+      end
+
       def handle_cast( {:work, foreman, args}, state ) do
         if args == nil do
           perform

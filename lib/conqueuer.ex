@@ -50,6 +50,7 @@ defmodule Conqueuer do
       defmodule MyApp.ResolversPoolSupervisor do
         use Conqueuer.Pool, name: :resolvers,
                             worker: MyApp.ResolverWorker,
+                            worker_args: [arg1: 1],
                             size: 20,
                             max_overflow: 10
       end
@@ -103,7 +104,7 @@ defmodule Conqueuer do
 
       Conqueuer.define_pool_supervisor( :resolvers, MyApp.ResolversPoolSupervisor )
   """
-  def define_pool_supervisor( pool_name, supervisor_module, worker_module, opts \\ [] ) do
+  def define_pool_supervisor( pool_name, supervisor_module, worker_module, worker_args \\ [], opts \\ [] ) do
     pool_size    = Keyword.get( opts, :pool_size, 2 )
     max_overflow = Keyword.get( opts, :max_overflow, 0 )
 
@@ -112,6 +113,7 @@ defmodule Conqueuer do
 
         use Conqueuer.Pool, name: :#{pool_name},
                             worker: #{worker_module},
+                            worker_args: #{inspect worker_args},
                             size: #{pool_size},
                             max_overflow: #{max_overflow}
 

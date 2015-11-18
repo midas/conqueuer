@@ -8,9 +8,17 @@ defmodule Conqueuer.Pool do
       defmodule MyApp.ResolversPoolSupervisor do
         use Conqueuer.Pool, name: :resolvers,
                             worker: MyApp.ResolverWorker,
+                            worker_args: [arg1: 1],
                             size: 10,
                             max_overflow: 20
       end
+
+  The `worker_args` argument is used for set up the initial state of your
+  worker, as they are passed through to the worker's `start_link` function and
+  eventually to the `init` function.  The Worker module implements a default
+  `init` function sets the `worker_args` as the worker's initial state.  You may
+  override the `init` function and use the options to set up a more custom initial
+  state.
 
   The `size` and `max_overflow` arguments are optional and if not provided the
   defaults are `size: 1` and `max_overflow: 0`.  For more information on these
@@ -56,10 +64,14 @@ defmodule Conqueuer.Pool do
         ]
 
         children = [
-          :poolboy.child_spec(name, pool_options, [])
+          :poolboy.child_spec(name, pool_options, worker_args)
         ]
 
         supervise(children, strategy: :one_for_one)
+      end
+
+      defp worker_args do
+        unquote(options[:worker_args] || [])
       end
 
       defp name do
