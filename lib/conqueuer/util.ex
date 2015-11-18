@@ -28,6 +28,13 @@ defmodule Conqueuer.Util do
     (infer_base_name( name ) <> "Queue") |> String.to_atom
   end
 
+  def infer_worker_name( name ) do
+    name
+    |> Inflex.singularize
+    |> String.capitalize
+    |> String.to_atom
+  end
+
   defp infer_base_name( name ) do
     name
     |> Atom.to_string
