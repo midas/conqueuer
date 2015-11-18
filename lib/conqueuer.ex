@@ -60,7 +60,7 @@ defmodule Conqueuer do
       defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
-        def perform({arg1, arg2}) do
+        def perform({arg1, arg2}, state) do
           # do some work
         end
       end

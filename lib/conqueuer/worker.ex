@@ -6,7 +6,7 @@ defmodule Conqueuer.Worker do
       defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
-        def perform do
+        def perform(state) do
         end
       end
 
@@ -15,7 +15,7 @@ defmodule Conqueuer.Worker do
       defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
-        def perform(param) do
+        def perform(param, state) do
         end
       end
 
@@ -24,7 +24,7 @@ defmodule Conqueuer.Worker do
       defmodule MyApp.ResolverWorker do
         use Conqueuer.Worker
 
-        def perform({param1, param2}) do
+        def perform({param1, param2}, state) do
         end
       end
   """
@@ -43,9 +43,9 @@ defmodule Conqueuer.Worker do
 
       def handle_cast( {:work, foreman, args}, state ) do
         if args == nil do
-          perform
+          perform state
         else
-          perform args
+          perform args, state
         end
 
         Conqueuer.Foreman.finished foreman, self
@@ -53,15 +53,15 @@ defmodule Conqueuer.Worker do
         {:noreply, state}
       end
 
-      def perform do
-        raise "You must define a perform/0 function in your worker"
-      end
-
       def perform(_) do
         raise "You must define a perform/1 function in your worker"
       end
 
-      defoverridable [ perform: 0, perform: 1 ]
+      def perform(_,_) do
+        raise "You must define a perform/1 function in your worker"
+      end
+
+      defoverridable [ perform: 1, perform: 2 ]
     end
   end
 
