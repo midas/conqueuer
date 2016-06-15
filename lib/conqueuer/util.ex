@@ -54,7 +54,7 @@ defmodule Conqueuer.Util do
   def ip_to_binary( ip_tuple ) do
     ip_tuple
     |> Tuple.to_list
-    |> Enum.join "."
+    |> Enum.join( "." )
   end
 
   def ip_to_tuple( ip_str ) do
