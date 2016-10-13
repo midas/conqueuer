@@ -1,6 +1,6 @@
-%{"earmark": {:hex, :earmark, "0.1.19"},
-  "espec": {:hex, :espec, "0.8.1"},
-  "ex_doc": {:hex, :ex_doc, "0.10.0"},
-  "inflex": {:hex, :inflex, "1.5.0"},
-  "meck": {:hex, :meck, "0.8.3"},
-  "poolboy": {:hex, :poolboy, "1.5.1"}}
+%{"earmark": {:hex, :earmark, "0.1.19", "ffec54f520a11b711532c23d8a52b75a74c09697062d10613fa2dbdf8a9db36e", [:mix], []},
+  "espec": {:hex, :espec, "0.8.1", "ab80c144c6c01399bcd653017155f192ccb45f0bbe96bea253dbb4f19c2a54b0", [:mix], [{:meck, "~> 0.8.3", [hex: :meck, optional: false]}]},
+  "ex_doc": {:hex, :ex_doc, "0.10.0", "f49c237250b829df986486b38f043e6f8e19d19b41101987f7214543f75947ec", [:mix], [{:earmark, "~> 0.1.17 or ~> 0.2", [hex: :earmark, optional: true]}]},
+  "inflex": {:hex, :inflex, "1.5.0", "e4ff5d900280b2011b24d1ac1c4590986ee5add2ea644c9894e72213cf93ff0b", [:mix], []},
+  "meck": {:hex, :meck, "0.8.3", "4628a1334c69610c5bd558b04dc78d723d8ec5445c123856de34c77f462b5ee5", [:rebar], []},
+  "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []}}
